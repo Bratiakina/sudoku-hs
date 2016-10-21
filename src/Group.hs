@@ -1,16 +1,17 @@
 module Group where
 
 import Data.Hashable
+import Data.List.NonEmpty
 import Location
 
 -- A group of locations where a digit can only be placed once
 class Group a where
-  points :: a -> [Location]
+  points :: a -> NonEmpty Location
 
 -- The types of groups
-newtype Column = Column [Location] deriving (Show)
-newtype Row = Row [Location] deriving (Show)
-newtype Block = Block [Location] deriving (Show)
+newtype Column = Column (NonEmpty Location) deriving (Show)
+newtype Row = Row (NonEmpty Location) deriving (Show)
+newtype Block = Block (NonEmpty Location) deriving (Show)
 
 -- And their Group instances
 instance Group Column where
@@ -22,24 +23,11 @@ instance Group Row where
 instance Group Block where
   points (Block ps) = ps
 
--- Constants containing all groups by type
-columns :: [Column]
-columns = do
-  columnBuilder  <- [ Location x | x <- allPoints ]
-  return (Column $ columnBuilder <$> allPoints)
+-- Enum instances
+instance Enum Column where
+  toEnum x = Column $ (Location $ toEnum x) <$> allPoints
+  fromEnum (Column ((Location x _) :| _)) = fromEnum x
 
-rows :: [Row]
-rows = do
-  rowBuilder <- [ (\y x -> Location x y) y | y <- allPoints ]
-  return (Row $ rowBuilder <$> allPoints)
-
-blocks :: [Block]
-blocks = do
-  xs <- segments
-  ys <- segments
-  return $ Block $ do
-    x <- xs
-    y <- ys
-    return $ Location x y
-      where
-        segments = [[P1, P2, P3], [P4, P5, P6], [P7, P8, P9]]
+instance Enum Row where
+  toEnum y = Row $ (\x -> Location x (toEnum y)) <$> allPoints
+  fromEnum (Row ((Location _ y) :| _)) = fromEnum y

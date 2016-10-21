@@ -2,7 +2,7 @@ module Main where
 
 import Location
 import Group
-import Sudoku
+--import Sudoku
 
 main :: IO ()
-main = putStrLn . show $ blocks
+main = putStrLn . show $ allPoints
