@@ -1,9 +1,8 @@
 module Main where
 
 import Location
+import Group
 import Sudoku
-
--- foldl :: (a -> b -> a) -> a -> [b] -> a
 
 main :: IO ()
 main = putStrLn . show $ blocks
