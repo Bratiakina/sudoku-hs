@@ -6,4 +6,4 @@ import Sudoku
 -- foldl :: (a -> b -> a) -> a -> [b] -> a
 
 main :: IO ()
-main = putStrLn . show $ columns
+main = putStrLn . show $ blocks
