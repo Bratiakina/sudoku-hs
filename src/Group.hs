@@ -28,6 +28,41 @@ instance Enum Column where
   toEnum x = Column $ (Location $ toEnum x) <$> allPoints
   fromEnum (Column ((Location x _) :| _)) = fromEnum x
 
+instance Bounded Column where
+  minBound = toEnum 0
+  maxBound = toEnum 8
+
 instance Enum Row where
   toEnum y = Row $ (\x -> Location x (toEnum y)) <$> allPoints
   fromEnum (Row ((Location _ y) :| _)) = fromEnum y
+
+instance Bounded Row where
+  minBound = toEnum 0
+  maxBound = toEnum 8
+
+instance Enum Block where
+  toEnum i = Block $ do
+    x <- segments . column $ i
+    y <- segments . row $ i
+    return $ (Location x y)
+    where
+      column :: Int -> Int
+      column i = (div i 3)
+
+      row :: Int -> Int
+      row i = (mod i 3)
+  
+      segments :: Int -> (NonEmpty Point)
+      segments 0 = (P1 :| [P2, P3])
+      segments 1 = (P4 :| [P5, P6])
+      segments 2 = (P7 :| [P8, P9])
+      segments _ = undefined
+      
+  fromEnum (Block (p :| _)) = (3 *(row p)) + (column p)
+    where
+      row (Location _ y) = div (fromEnum y) 3
+      column (Location x _) = div (fromEnum x) 3
+  
+instance Bounded Block where
+  minBound = toEnum 0
+  maxBound = toEnum 8

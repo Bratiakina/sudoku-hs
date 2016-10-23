@@ -5,4 +5,4 @@ import Group
 --import Sudoku
 
 main :: IO ()
-main = putStrLn . show $ allPoints
+main = putStrLn . show $ ([minBound .. maxBound] :: [Block])
