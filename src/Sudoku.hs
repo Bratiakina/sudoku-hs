@@ -9,7 +9,7 @@ data Sudoku = Sudoku (Map.Map Location Constraints) deriving (Show)
 
 data Digit = D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9 deriving (Enum)
 
-data Constraints = Is Digit | Not (Set.Set Digit) | Guess Digit (Set.Set Digit) deriving (Show)
+data Constraints = Is Digit | Not (Set.Set Digit)
 
 instance Show Digit where
   show D1 = "1"
